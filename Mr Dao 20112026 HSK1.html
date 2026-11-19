@@ -21,10 +21,42 @@
     flex: 1; min-width: 270px; text-align: center; padding: 20px;
     background: #fff9f5; border-radius: 15px; border: 2px dashed #e17055;
   }
-  .card h1 { color: #d63031; font-size: 2rem; margin-bottom: 6px; }
+  .card h1 {
+    color: #d63031; font-size: 2rem; margin-bottom: 6px;
+    overflow: hidden; white-space: nowrap; width: 100%;
+  }
+  .card h1 span {
+    display: inline-block; padding-left: 100%;
+    background: linear-gradient(90deg, #d63031, #e84393, #6c5ce7, #0984e3, #00b894, #e17055, #d63031);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: headline-run 12s linear infinite, headline-color 5s linear infinite;
+  }
+  @keyframes headline-run {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+  @keyframes headline-color {
+    from { background-position: 0% 50%; filter: hue-rotate(0deg); }
+    to { background-position: 100% 50%; filter: hue-rotate(360deg); }
+  }
+  .music-box {
+    width: 100%; margin-top: 16px; padding: 12px;
+    background: #fff0f0; border: 1.5px solid #fab1a0; border-radius: 12px;
+  }
+  .music-title { color: #b33939; font-weight: bold; margin-bottom: 8px; }
+  .music-frame { width: 100%; height: 80px; border: 0; border-radius: 8px; }
+  .music-note { color: #765; font-size: 0.78rem; line-height: 1.45; margin-top: 6px; }
   .card h3 { color: #e17055; font-size: 1rem; margin-bottom: 14px; }
   .card p { font-size: 0.95rem; line-height: 1.6; color: #444; margin-bottom: 12px; text-align: justify; }
   .sign { font-weight: bold; color: #d63031; text-align: right; font-style: italic; }
+  /* An cac dong cho den dung luot hien chu */
+  .typing-text { white-space: pre-wrap; visibility: hidden; }
+  .typing-text.typing, .typing-text.done { visibility: visible; }
+  .typing-text::after { content: "|"; display: inline-block; margin-left: 2px; color: #d63031; animation: typing-caret 0.75s steps(1) infinite; }
+  .typing-text.done::after { content: ""; animation: none; }
+  @keyframes typing-caret { 50% { opacity: 0; } }
 
   .game { flex: 1; min-width: 290px; display: flex; flex-direction: column; align-items: center; }
   .badge {
@@ -112,6 +144,8 @@
   #s3:checked ~ #m3 { animation: pop 0.3s ease 6.6s forwards; }
   #c3:checked ~ #m3 { display: none !important; }
   @keyframes pop { to { opacity: 1; visibility: visible; pointer-events: auto; } }
+  .music-player { display: block; width: 100%; max-width: 420px; margin: 10px auto; }
+  .music-note { font-size: 0.85rem; color: #666; text-align: center; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -124,11 +158,19 @@
 
   <div class="box">
     <div class="card">
-      <h1>Chúc Mừng 20/11</h1>
+      <h1><span>🎉 Chúc Mừng Ngày Nhà Giáo Việt Nam 20/11 🎉</span></h1>
       <h3>Ngày Nhà Giáo Việt Nam</h3>
-      <p>Nhân ngày Nhà giáo Việt Nam 20/11, kính chúc Cô 栾老师 luôn mạnh khỏe, hạnh phúc và giữ mãi ngọn lửa nhiệt huyết với sự nghiệp trồng người. Cảm ơn Cô đã luôn tận tụy dìu dắt chúng em!</p>
-      <p style="text-align:center; color:#d63031; font-weight:bold;">🎁 Cô có 3 lần quay may mắn! Mời Cô 栾老师 quay vòng quay bên cạnh để nhận quà tri ân từ lớp HSK1!</p>
-      <div class="sign">Tập thể lớp HSK1</div>
+      <p><span class="typing-text" data-typing="slow">Nhân ngày Nhà giáo Việt Nam 20/11, kính chúc Cô 栾老师 luôn mạnh khỏe, hạnh phúc và giữ mãi ngọn lửa nhiệt huyết với sự nghiệp trồng người. Cảm ơn Cô đã luôn tận tụy dìu dắt chúng em!</span></p>
+      <p style="text-align:center; color:#d63031; font-weight:bold;"><span class="typing-text" data-typing="normal">🎁 Cô có 3 lần quay may mắn! Mời Cô 栾老师 quay vòng quay bên cạnh để nhận quà tri ân từ lớp HSK1!</span></p>
+      <div class="sign"><span class="typing-text" data-typing="normal">Tập thể lớp HSK1</span></div>
+      <div class="music-box">
+        <div class="music-title">🎵 Nhạc tri ân: Người Thầy – Cẩm Ly</div>
+        <audio class="music-player" id="teacherSong" controls autoplay loop preload="auto" playsinline>
+          <source src="https://raw.githubusercontent.com/MrDoanDucDao/HappyTeacherDay/main/Ng%C6%B0%E1%BB%9Di%20Th%E1%BA%A7y.mp3" type="audio/mpeg">
+          Trình duyệt của bạn không hỗ trợ phát nhạc MP3.
+        </audio>
+        <div class="music-note" id="musicNote">🎵 Đang thử phát bài Người Thầy. Nếu trình duyệt chặn tự động phát, Cô chỉ cần nhấn nút Play hoặc chạm vào trang một lần.</div>
+      </div>
     </div>
 
     <div class="game">
@@ -184,5 +226,61 @@
       <label for="c3" class="close">Nhận Quà Ngay</label>
     </div>
   </div>
+<script>
+  // Hien dan loi chuc nhu hieu ung nguoi dang go chu
+  document.addEventListener("DOMContentLoaded", function () {
+    const items = Array.from(document.querySelectorAll(".typing-text"));
+    items.forEach(element => { element.dataset.fullText = element.textContent; });
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    // Xoa noi dung tat ca cac dong ngay tu dau de khong lo ra truoc luot
+    items.forEach(element => { element.textContent = ""; });
+
+    async function typeOne(element) {
+      const fullText = element.dataset.fullText;
+      element.classList.add("typing");
+      const speed = element.dataset.typing === "slow" ? 34 : 38;
+      for (const character of fullText) {
+        element.textContent += character;
+        await wait(character === " " ? 22 : speed);
+      }
+      element.classList.add("done");
+    }
+
+    (async function runTyping() {
+      await wait(700);
+      for (let i = 0; i < items.length; i++) {
+        await typeOne(items[i]);
+        if (i < items.length - 1) await wait(550);
+      }
+    })();
+  });
+</script>
+
+<script>
+  (function () {
+    const audio = document.getElementById('teacherSong');
+    const note = document.getElementById('musicNote');
+    if (!audio) return;
+
+    function tryPlay() {
+      const result = audio.play();
+      if (result && typeof result.then === 'function') {
+        result.then(function () {
+          if (note) note.textContent = '🎵 Đang phát: Người Thầy – Cẩm Ly';
+        }).catch(function () {
+          if (note) note.textContent = '🎵 Hãy nhấn Play hoặc chạm vào trang một lần để bắt đầu nghe nhạc.';
+        });
+      }
+    }
+
+    window.addEventListener('load', tryPlay);
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (eventName) {
+      document.addEventListener(eventName, function startAfterGesture() {
+        if (audio.paused) tryPlay();
+      }, { once: true, passive: true });
+    });
+  })();
+</script>
 </body>
 </html>
